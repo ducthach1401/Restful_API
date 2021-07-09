@@ -26,7 +26,7 @@ const schema_class = new mongoose.Schema({
 const schema_parent = new mongoose.Schema({
     _id: mongoose.Types.ObjectId,
     idParent: {type: Number, unique:true, default:180000},
-    idStudent:[Number],
+    idStudent:Number,
     name: String,
     create_at: String,
     update_at: String
@@ -106,12 +106,20 @@ function insertData(object, data){
     });
 }
 
-function updateData(object, data){
+function updateData(object, filter, data){
     db.once('open', function() {
         if (object === 'student'){
             var createDate = new Date().toJSON().slice(0,10).replace(/-/g,'/');
             data.update_at = createDate;
-            Student.updateOne({idStudent: data.idStudent},data, (err) => {
+            if ("idStudent" in data){
+                Class.updateMany({idStudent: filter.idStudent},{"$set":{"idStudent.$": data.idStudent }}, (err) => {
+                    if (err) throw err;
+                })
+                Parent.updateMany({idStudent: filter.idStudent}, {"$set":{"idStudent.$": data.idStudent }}, (err) => {
+                    if (err) throw err;
+                })
+            }
+            Student.updateOne({idStudent: filter.idStudent},data, (err) => {
                 if (err){
                     throw err;
                 } 
@@ -120,6 +128,11 @@ function updateData(object, data){
         else if (object === 'class') {
             var createDate = new Date().toJSON().slice(0,10).replace(/-/g,'/');
             data.update_at = createDate;
+            if ("idClass" in data){
+                Student.updateMany({idClass: filter.idClass},{"$set":{"idClass.$": data.idClass }}, (err) => {
+                    if (err) throw err;
+                })
+            }
             Class.updateOne({idClass: data.idClass},data, (err) => {
                 if (err){
                     throw err;
@@ -129,6 +142,11 @@ function updateData(object, data){
         else if (object === 'parent') {
             var createDate = new Date().toJSON().slice(0,10).replace(/-/g,'/');
             data.update_at = createDate;
+            if ("idParent" in data){
+                Student.updateMany({idParent: filter.idParent},{"$set":{"idParent.$": data.idParent }}, (err) => {
+                    if (err) throw err;
+                })
+            }
             Parent.updateOne({idParent: data.idParent},data, (err) => {
                 if (err){
                     throw err;
@@ -230,21 +248,21 @@ var data_test = {
 
 var data_test_class = {
     name: "Tieng Anh",
-    idStudent: [1814062]
+    idStudent: [1814062, 1814063, 1814066]
 };
 
 var data_test_parent = {
     name: "Tieng Anh",
-    idStudent: [1814062]
+    idStudent: 1814062
 };
 
 // insertData("student", data_test);
 // insertData("class", data_test_class);
 // insertData("parent", data_test_parent);
 
-updateData("student", {
-    idStudent: 1814063,
-    idClass:5000
+updateData("student",{idStudent: 1814062} ,{
+    idStudent: 1814099,
+    name: "aaaa"
 })
 // deleteData("student", {idStudent: 1814062});
 // deleteData("class", {idClass: 2000});
