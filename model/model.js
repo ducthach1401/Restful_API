@@ -232,9 +232,25 @@ function deleteData(object, data){
     });
 }
 
-function addClass(data){
+function addClass(data_id){
     db.once('open', () =>{
+        Student.updateOne(data_id.idStudent, {"$push": {idClass: data_id.idClass}} ,(err) => {
+            if (err) throw err;
+        })
+        Class.updateOne(data_id.idClass, {"$push": {idStudent: data_id.idStudent}} ,(err) => {
+            if (err) throw err;
+        })
+    })
+}
 
+function addParent(data_id){
+    db.once('open', () =>{
+        Student.updateOne(data_id.idStudent, {"$push": {idParent: data_id.idParent}} ,(err) => {
+            if (err) throw err;
+        })
+        Parent.updateOne(data_id.idParent, {idStudent: data_id.idStudent} ,(err) => {
+            if (err) throw err;
+        })
     })
 }
 
@@ -256,6 +272,10 @@ var data_test_parent = {
     idStudent: 1814062
 };
 
+var data_add_class = {
+    idClass: 2000,
+    idStudent: 1814062
+}
 // insertData("student", data_test);
 // insertData("class", data_test_class);
 // insertData("parent", data_test_parent);
