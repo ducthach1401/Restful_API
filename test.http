@@ -22,5 +22,46 @@ POST http://localhost:8080/parent/
 Content-Type: application/json
 
 {
-    "name": "Tieng Viet"
+    "name": "Bui A"
 }
+
+###################
+PUT http://localhost:8080/student/1814062/
+Content-Type: application/json
+
+{
+    "name": "Nguyen Van A"
+}
+
+###################
+PUT http://localhost:8080/class/2002/
+Content-Type: application/json
+
+{
+    "idClass":3000,
+    "name": "Nguyen Van AA"
+}
+
+###################
+PUT http://localhost:8080/parent/180000/
+Content-Type: application/json
+
+{
+    "idParent":3000,
+    "name": "Nguyen Van AA"
+}
+
+###################
+DELETE http://localhost:8080/student/1814062/
+
+###################
+DELETE http://localhost:8080/class/2001/
+
+##################
+DELETE http://localhost:8080/parent/180005/
+
+##################
+GET  http://localhost:8080/student/1?idStudent=1814062&idClass=2000
+
+##################
+GET  http://localhost:8080/student/2?idStudent=1814062&idParent=180001
