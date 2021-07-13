@@ -11,10 +11,10 @@ mongoose.connect(url_mongo, {
 })
 
 const db = mongoose.connection;
-
 db.on('error', console.error.bind(console, 'connection error:'));
 
 async function insertStudent(req, res){
+    let result;
     db.once('open', function() {
         let newStudent = new Student;
         newStudent.name = req.body.name;
@@ -30,10 +30,12 @@ async function insertStudent(req, res){
                     newStudent.idStudent++;
                     temp();
                 }
+                else {
+                    result = 1;
+                }
             });
         }
         temp();
-        result = 1;
     });
     if (result){
         res.json({code: 200});
@@ -69,7 +71,7 @@ async function insertClass(req, res) {
 
 async function insertParent(req, res) {
     let result;
-    db.once('open', function() {
+    db.once('open', function(err) {
         let newParent = new Parent;
         newParent._id = new mongoose.Types.ObjectId;
         newParent.name = req.body.name;

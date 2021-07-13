@@ -5,8 +5,8 @@ const controller = require('../controller/controller.js');
 var routerStudent = router.post('/', controller.insertStudent);
 routerStudent.put('/:idStudent', controller.updateStudent);
 routerStudent.delete('/:idStudent', controller.deleteStudent);
-routerStudent.get('/', controller.addClass);
-routerStudent.get('/', controller.addParent);
+routerStudent.get('/1', controller.addClass);
+routerStudent.get('/2', controller.addParent);
 
 var routerClass = router.post('/', controller.insertClass);
 routerClass.put('/:idClass', controller.updateClass);
