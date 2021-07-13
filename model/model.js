@@ -30,8 +30,6 @@ const schema_parent = new mongoose.Schema({
     update_at: String
 });
 
-
-
 const Student = mongoose.model('student', schema_student);
 const Class = mongoose.model('class', schema_class);
 const Parent = mongoose.model('parent', schema_parent);
