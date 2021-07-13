@@ -345,12 +345,19 @@ async function addParent(req, res){
 
 async function filterStudent(req, res) {
     let data = [];
-    db.once('open', () =>{
-        Student.aggregate([{
-            $match: {'idParent': {$gte: 2}}
-        }], function(err, result) {
-            data.push(result);
-        })
+    await Student.aggregate([{
+        $project: {
+            sizeParent: {$size:'$idParent'},
+            better: {$lte: [ "$sizeParent", 2 ]},
+            idStudent: "$idStudent",
+            name: "$name",
+            dateOfBirth: "$dateOfBirth",
+            idParent: "$idParent"
+        }},
+        { $match: 
+            { sizeParent : {$gte:2}}
+    }], function(err, result) {
+        data.push(result);
     });
     res.json(data);
 }

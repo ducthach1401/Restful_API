@@ -7,5 +7,5 @@ router.put('/:idStudent', controller.updateStudent);
 router.delete('/:idStudent', controller.deleteStudent);
 router.get('/1', controller.addClass);
 router.get('/2', controller.addParent);
-
+router.get('/filter', controller.filterStudent);
 module.exports = router;
