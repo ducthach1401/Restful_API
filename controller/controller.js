@@ -15,7 +15,6 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 async function insertStudent(req, res){
     let result;
-    db.once('open', function() {
         let newStudent = new Student;
         newStudent.name = req.body.name;
         newStudent.dateOfBirth = req.body.dateOfBirth;
@@ -24,6 +23,7 @@ async function insertStudent(req, res){
         var createDate = new Date().toJSON().slice(0,10).replace(/-/g,'/');
         newStudent.create_at = createDate;
         newStudent.update_at = createDate;
+        console.log(req);
         function temp(){
             newStudent.save((err) => {
                 if (err){
@@ -36,7 +36,6 @@ async function insertStudent(req, res){
             });
         }
         temp();
-    });
     if (result){
         res.json({code: 200});
     }

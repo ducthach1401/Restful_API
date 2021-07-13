@@ -16,6 +16,7 @@
     "nodemon": "^2.0.9"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.5",
     "mongoose": "^5.13.2",
     "start": "^5.1.0"
   }
