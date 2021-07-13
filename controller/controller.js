@@ -15,28 +15,25 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 async function insertStudent(req, res){
     let result;
-        let newStudent = new Student;
-        newStudent.name = req.body.name;
-        newStudent.dateOfBirth = req.body.dateOfBirth;
-        newStudent.gender = req.body.gender;
-        newStudent._id = new mongoose.Types.ObjectId;
-        var createDate = new Date().toJSON().slice(0,10).replace(/-/g,'/');
-        newStudent.create_at = createDate;
-        newStudent.update_at = createDate;
-        console.log(req);
-        function temp(){
-            newStudent.save((err) => {
-                if (err){
-                    newStudent.idStudent++;
-                    temp();
-                }
-                else {
-                    result = 1;
-                }
-            });
-        }
-        temp();
-    if (result){
+    let newStudent = new Student;
+    newStudent.name = req.body.name;
+    newStudent.dateOfBirth = req.body.dateOfBirth;
+    newStudent.gender = req.body.gender;
+    newStudent._id = new mongoose.Types.ObjectId;
+    var createDate = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+    newStudent.create_at = createDate;
+    newStudent.update_at = createDate;
+    function temp(){
+        newStudent.save((err) => {
+            if (err){
+                newStudent.idStudent++;
+                temp();
+            }
+        });
+        result = 1;
+    }
+    temp();
+    if (result === 1){
         res.json({code: 200});
     }
     else res.json({code: 400});
@@ -44,24 +41,22 @@ async function insertStudent(req, res){
 
 async function insertClass(req, res) {
     let result;
-    db.once('open', function() {
-        let newClass = new Class;
-        newClass._id = new mongoose.Types.ObjectId;
-        newClass.name = req.body.name;
-        var createDate = new Date().toJSON().slice(0,10).replace(/-/g,'/');
-        newClass.create_at = createDate;
-        newClass.update_at = createDate;
-        function temp(){
-            newClass.save((err) => {
-                if (err){
-                    newClass.idClass++;
-                    temp();
-                }
-            });
-        }
-        temp();
+    let newClass = new Class;
+    newClass._id = new mongoose.Types.ObjectId;
+    newClass.name = req.body.name;
+    var createDate = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+    newClass.create_at = createDate;
+    newClass.update_at = createDate;
+    function temp(){
+        newClass.save((err) => {
+            if (err){
+                newClass.idClass++;
+                temp();
+            }
+        });
         result = 1;
-    });
+    }
+    temp();
     if (result){
         res.json({code: 200});
     }
@@ -70,24 +65,22 @@ async function insertClass(req, res) {
 
 async function insertParent(req, res) {
     let result;
-    db.once('open', function(err) {
-        let newParent = new Parent;
-        newParent._id = new mongoose.Types.ObjectId;
-        newParent.name = req.body.name;
-        var createDate = new Date().toJSON().slice(0,10).replace(/-/g,'/');
-        newParent.create_at = createDate;
-        newParent.update_at = createDate;
-        function temp(){
-            newParent.save((err) => {
-                if (err){
-                    newParent.idParent++;
-                    temp();
-                }
-            });
-        }
-        temp();
-        result = 1;
-    });
+    let newParent = new Parent;
+    newParent._id = new mongoose.Types.ObjectId;
+    newParent.name = req.body.name;
+    var createDate = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+    newParent.create_at = createDate;
+    newParent.update_at = createDate;
+    function temp(){
+        newParent.save((err) => {
+            if (err){
+                newParent.idParent++;
+                temp();
+            }
+        });
+    }
+    temp();
+    result = 1;
     if (result){
         res.json({code: 200});
     }

@@ -1,8 +1,8 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
-const Student = require('./router/router.js').routerStudent;
-const Class = require('./router/router.js').routerClass;
-const Parent = require('./router/router.js').routerParent;
+const Student = require('./router/routerStudent.js');
+const Class = require('./router/routerClass.js');
+const Parent = require('./router/routerParent.js');
 
 const app = express();
 app.use(express.json());

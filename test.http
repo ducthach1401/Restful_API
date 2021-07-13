@@ -1,16 +1,26 @@
 POST http://localhost:8080/student/
-
 Content-Type: application/json
+
 {
     "name": "Bui Duc Thach",
     "gender": "Name",
     "dateOfBirth": "14/01/2354"
 }
 
-##########################
-POST http://localhost:8080/parent/
+###################
 
+POST http://localhost:8080/class/
 Content-Type: application/json
+
 {
-    "name": "Tieng Viet",
+    "name": "Tieng Viet"
+}
+
+###################
+
+POST http://localhost:8080/parent/
+Content-Type: application/json
+
+{
+    "name": "Tieng Viet"
 }
