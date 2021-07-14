@@ -4,7 +4,7 @@ Content-Type: application/json
 {
     "name": "Bui Duc Thach",
     "gender": "Name",
-    "dateOfBirth": "14/01/2354"
+    "dateOfBirth": "13/02/2021"
 }
 
 ###################
@@ -68,3 +68,6 @@ GET  http://localhost:8080/student/2?idStudent=1814062&idParent=180001
 
 ##################
 GET  http://localhost:8080/student/filter
+
+##################
+GET  http://localhost:8080/student/user?search=Bui&limit=10&page=1&sort=dateOfBirth&filter=15/07/2021

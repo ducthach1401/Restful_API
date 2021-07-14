@@ -362,6 +362,49 @@ async function filterStudent(req, res) {
     res.json(data);
 }
 
+async function searchStudent(req, res) {
+    let searchText = req.query.search;
+    let limited = parseInt(req.query.limit);
+    let page = parseInt(req.query.page) - 1;
+    let sort2 = req.query.sort;
+    let filter = req.query.filter;
+    await Student.find({$text: {$search: searchText}})
+    .limit(limited)
+    .skip(page * limited)
+    .exec(
+        function (err, docs){
+            if (err) throw err;
+            docs.sort(function (a, b){
+                if (sort2 === 'dateOfBirth'){
+                    let tempA = a.dateOfBirth.split('/');
+                    let dateA = parseInt(tempA.reverse().join(''));
+                    let tempB = b.dateOfBirth.split('/');
+                    let dateB = parseInt(tempB.reverse().join(''));
+                    return dateA - dateB;
+                }
+                else {
+                    let tempA = a.dateOfBirth.split('/');
+                    let tempB = b.dateOfBirth.split('/');
+                    let dateA = parseInt(tempA.join(''));
+                    let dateB = parseInt(tempB.join(''));
+                    return dateA - dateB;
+                }
+                
+            });
+            if (filter != undefined){
+                docs = docs.filter(function (dateCreate){
+                    let tempFilter = filter.split('/');
+                    tempFilter = parseInt(tempFilter.reverse().join(''));
+                    let temp = dateCreate.create_at.split('/');
+                    let date = parseInt(temp.join(''));
+                    return date >= tempFilter;
+                });
+            }
+            res.json(docs);
+        }
+    );
+}
+
 module.exports.insertStudent = insertStudent;
 module.exports.insertClass = insertClass;
 module.exports.insertParent = insertParent;
@@ -374,3 +417,4 @@ module.exports.deleteParent = deleteParent;
 module.exports.addClass = addClass;
 module.exports.addParent = addParent;
 module.exports.filterStudent = filterStudent;
+module.exports.searchStudent = searchStudent;

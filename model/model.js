@@ -30,9 +30,11 @@ const schema_parent = new mongoose.Schema({
     update_at: String
 });
 
+schema_student.index({name: 'text', create_at: 'text', update_at: 'text', dateOfBirth: 'text'});
 const Student = mongoose.model('student', schema_student);
 const Class = mongoose.model('class', schema_class);
 const Parent = mongoose.model('parent', schema_parent);
+Student.createIndexes();
 
 module.exports.Class = Class;
 module.exports.Parent = Parent;
