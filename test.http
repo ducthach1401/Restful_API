@@ -61,7 +61,7 @@ DELETE http://localhost:8080/class/2001/
 DELETE http://localhost:8080/parent/180005/
 
 ##################
-GET  http://localhost:8080/student/1?idStudent=1814062&idClass=2000
+GET  http://localhost:8080/student/1?idStudent=1814062&idClass=9999
 
 ##################
 GET  http://localhost:8080/student/2?idStudent=1814062&idParent=180001

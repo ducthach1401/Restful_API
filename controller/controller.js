@@ -188,17 +188,17 @@ async function updateParent(req, res){
 async function deleteStudent(req, res){
     let result;
     let data_idStudent = req.params.idStudent;
-    Student.findOne({idStudent: data_idStudent}, (err, doc) => {
+    Student.findOne({idStudent: data_idStudent}, (err, docs) => {
         if (err) result = 0;
-        if (doc === null) {
+        if (docs === null) {
             console.log("Null");
         }
-        var class_delete = doc.idClass;
-        var parent_delete = doc.idParent;
+        var class_delete = docs.idClass;
+        var parent_delete = docs.idParent;
         for (let i of class_delete){
             Class.findOne({_id:i}, (err, doc) => {
                 if (err) result = 0;
-                let temp = doc.idStudent.remove(data_idStudent);
+                let temp = doc.idStudent.remove(docs._id);
                 Class.updateOne({_id:i}, {idStudent:temp}, (err, res) => {
                     if (err) {
                         if (temp.length === 0){
@@ -230,16 +230,16 @@ async function deleteStudent(req, res){
 async function deleteClass(req, res) {
     let result;
     let data_idClass = req.params.idClass;
-    await Class.findOne({idClass: data_idClass}, (err, doc) =>{
+    await Class.findOne({idClass: data_idClass}, (err, docs) =>{
         if (err){
             result = 0;
         }
-        if (doc != null){
-            for (let x of doc.idStudent){
-                Student.findOne({idStudent:x}, (err, doc) =>{
+        if (docs != null){
+            for (let x of docs.idStudent){
+                Student.findOne({_id:x}, (err, doc) =>{
                     if (err) result = 0;
-                    let temp = doc.idClass.remove(data_idClass);
-                    Student.updateOne({idStudent:x}, {idClass:temp}, (err, res) => {
+                    let temp = doc.idClass.remove(docs._id);
+                    Student.updateOne({_id:x}, {idClass:temp}, (err, res) => {
                         if (err) result = 0;
                     })
                 })
@@ -294,7 +294,6 @@ async function addClass(req, res){
                     Student.updateOne({idStudent: data_idStudent}, {"$push": {idClass: data._id}} ,(err) => {
                         if (err) result = 0;
                     });
-                    console.log(temp.idClass)
                     Class.updateOne({idClass:data_idClass}, {"$push": {idStudent: temp._id}} ,(err) => {
                         if (err) result = 0;
                     });
@@ -305,7 +304,7 @@ async function addClass(req, res){
                         if (err) result = 0;
                     });
     
-                    Class.updateOne({idClass:data_idClass}, {"$push": {idStudent: data._id}} ,(err) => {
+                    Class.updateOne({idClass:data_idClass}, {"$push": {idStudent: temp._id}} ,(err) => {
                         if (err) result = 0;
                     });
                     result = 1;
@@ -315,7 +314,7 @@ async function addClass(req, res){
             else result = 0;
         });
     });
-    if (result){
+    if (result === 1){
         res.json({code: 200});
     }
     else res.json({code: 400});
@@ -325,7 +324,7 @@ async function addParent(req, res){
     let data_idStudent = req.query.idStudent;
     let data_idParent = req.query.idParent;
     let result;
-    Student.findOne({idStudent: data_idStudent}, (err, data) => {
+    await Student.findOne({idStudent: data_idStudent}, (err, data) => {
         if (!(data.idParent.includes(data_idParent))){
             Student.updateOne({idStudent: data_idStudent}, {"$push": {idParent: data_idParent}} ,(err) => {
                 if (err) result = 0;
